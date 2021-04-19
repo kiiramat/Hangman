@@ -34,10 +34,16 @@ class Hangman{
         this.mainContainer.append(clueContainer);
     }
 
-    // wordToBeGuessed() {
-
-    //     console.log(cluesAndQuestions[this._randomClue])
-    // }
+    wordToBeGuessed() {
+        const wordContainer = document.createElement("div");
+        wordContainer.className = "random-word";
+        const listOfWords = cluesAndQuestions[this._randomClue];
+        const randomWord = listOfWords[Math.floor(Math.random() * listOfWords.length)];
+        const guessWord = randomWord.split('').map(letter => "_").join(' ');
+        
+        wordContainer.append(guessWord);
+        this.mainContainer.append(wordContainer);
+    }
 
     drawButton() {
         const buttons = document.createElement("div");

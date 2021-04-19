@@ -1,8 +1,8 @@
 class Hangman{
     constructor(selector) {
         this.mainContainer = document.querySelector(selector);
-        this._randomClue = chooseRandom(Object.keys(cluesAndQuestions));
-        this._randomWord = chooseRandom(cluesAndQuestions[this._randomClue]);
+        this._randomClue = chooseRandom(Object.keys(categorisedWords));
+        this._randomWord = chooseRandom(categorisedWords[this._randomClue]);
     }
 
     drawTitleElement() {

@@ -1,7 +1,8 @@
 class Hangman{
-    constructor(selector){
+    constructor(selector) {
         this.mainContainer = document.querySelector(selector);
-        this._randomClue = null;
+        this._randomClue = chooseRandom(Object.keys(cluesAndQuestions));
+        this._randomWord = chooseRandom(cluesAndQuestions[this._randomClue]);
     }
 
     drawTitleElement() {
@@ -25,23 +26,24 @@ class Hangman{
     drawClue() {
         const clueContainer = document.createElement("div");
         clueContainer.className = "clue"
-        const text = document.createElement("p");
-        const clues = Object.keys(cluesAndQuestions);
-        this._randomClue = clues[Math.floor(Math.random() * clues.length)];
-        text.innerHTML = this._randomClue;
+        const text = document.createElement("h2");
+        text.innerHTML = "Clue: " + this._randomClue;
 
         clueContainer.append(text);
         this.mainContainer.append(clueContainer);
     }
 
-    wordToBeGuessed() {
+    maskWord(word) {
+        return word.split('').map(ignored => "_").join(' ');
+    }
+
+    drawWord() {
         const wordContainer = document.createElement("div");
         wordContainer.className = "random-word";
-        const listOfWords = cluesAndQuestions[this._randomClue];
-        const randomWord = listOfWords[Math.floor(Math.random() * listOfWords.length)];
-        const guessWord = randomWord.split('').map(letter => "_").join(' ');
-        
-        wordContainer.append(guessWord);
+        const text = document.createElement("h1");
+        text.innerHTML = this.maskWord(this._randomWord);
+
+        wordContainer.append(text);
         this.mainContainer.append(wordContainer);
     }
 
@@ -59,7 +61,7 @@ class Hangman{
         this.drawTitleElement();
         this.drawGuessesStillLeft();
         this.drawClue();
-        this.wordToBeGuessed();
+        this.drawWord();
         this.drawButton();
     }
 

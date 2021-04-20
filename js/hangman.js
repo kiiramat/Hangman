@@ -65,14 +65,10 @@ class Hangman{
         this.mainContainer.append(keyboardContainer);
     }
 
-    drawButton() {
-        const buttons = document.createElement("div");
-        buttons.className = "reset-button"
-        const resetButton = document.createElement("button");
-        resetButton.innerHTML = "Reset";
+    drawResetButton() {
+        const button = ElementUtilities.createButtonElement("reset-button", "Reset")
         
-        buttons.append(resetButton);
-        this.mainContainer.append(buttons);
+        this.mainContainer.append(button);
     }
 
     draw() {
@@ -81,7 +77,7 @@ class Hangman{
         this.drawClue();
         this.drawWord();
         this.drawKeyboard();
-        this.drawButton();
+        this.drawResetButton();
     }
 
 }

@@ -3,10 +3,10 @@ class Hangman{
         this.mainContainer = document.querySelector(selector);
         this._randomClue = chooseRandom(Object.keys(categorisedWords));
         this._randomWord = chooseRandom(categorisedWords[this._randomClue]);
-
+        this.wrongGuessesCount = 0;
+        
         //DOM Elements
-        this.usedGuesses = "0";
-        this.wrongGuessesCount = "0";
+        this.usedGuesses = null;
         this.clue = null;
         this.word = null;
     }

@@ -1,4 +1,4 @@
-const ElementUtilities = {}
+const ElementUtilities = {};
 
 ElementUtilities.createButtonElement = (className, text, func) => {
     const button = document.createElement("button");

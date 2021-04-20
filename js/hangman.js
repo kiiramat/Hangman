@@ -3,6 +3,12 @@ class Hangman{
         this.mainContainer = document.querySelector(selector);
         this._randomClue = chooseRandom(Object.keys(categorisedWords));
         this._randomWord = chooseRandom(categorisedWords[this._randomClue]);
+
+        //DOM Elements
+        this.usedGuesses = "0";
+        this.wrongGuessesCount = "0";
+        this.clue = null;
+        this.word = null;
     }
 
     drawTitleElement() {
@@ -15,21 +21,31 @@ class Hangman{
         this.mainContainer.append(headerContainer);
     }
 
-    drawGuessesStillLeft() {
+    drawUsedGuesses() {
         const guessesContainer = document.createElement("div");
-        guessesContainer.className = "guesses-left";
-        guessesContainer.innerHTML = "Wrong Guesses:"; 
+        const text = document.createElement("p");
+        text.className = "guesses-left";
+        text.innerHTML = "Wrong Guesses: ";
 
+        this.usedGuesses = document.createElement("span");
+        this.usedGuesses.innerHTML = this.wrongGuessesCount;
+
+        const maxGuesses = document.createElement("span");
+        maxGuesses.innerHTML = " of 6";
+
+        guessesContainer.append(text);
+        text.append(this.usedGuesses);
+        text.append(maxGuesses);
         this.mainContainer.append(guessesContainer);
     }
 
     drawClue() {
         const clueContainer = document.createElement("div");
         clueContainer.className = "clue"
-        const text = document.createElement("h2");
-        text.innerHTML = "Clue: " + this._randomClue;
+        this.clue = document.createElement("h2");
+        this.clue.innerHTML = "Clue: " + this._randomClue;
 
-        clueContainer.append(text);
+        clueContainer.append(this.clue);
         this.mainContainer.append(clueContainer);
     }
 
@@ -40,10 +56,10 @@ class Hangman{
     drawWord() {
         const wordContainer = document.createElement("div");
         wordContainer.className = "random-word";
-        const text = document.createElement("h1");
-        text.innerHTML = this.maskWord(this._randomWord);
+        this.word = document.createElement("h1");
+        this.word.innerHTML = this.maskWord(this._randomWord);
 
-        wordContainer.append(text);
+        wordContainer.append(this.word);
         this.mainContainer.append(wordContainer);
     }
 
@@ -65,15 +81,24 @@ class Hangman{
         this.mainContainer.append(keyboardContainer);
     }
 
+    reset() {
+        this.usedGuesses.innerHTML = "0";
+        this.clue.innerHTML = "Clue: " + this._randomClue;;
+        this.word.innerHTML = this.maskWord(this._randomWord);
+        //@TODO: reset keyboard
+    }
+
     drawResetButton() {
-        const button = ElementUtilities.createButtonElement("reset-button", "Reset")
+        const resetButton = ElementUtilities.createButtonElement("reset-button", "Reset", () => {
+            this.reset();
+        });
         
-        this.mainContainer.append(button);
+        this.mainContainer.append(resetButton);
     }
 
     draw() {
         this.drawTitleElement();
-        this.drawGuessesStillLeft();
+        this.drawUsedGuesses();
         this.drawClue();
         this.drawWord();
         this.drawKeyboard();

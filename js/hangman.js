@@ -47,6 +47,24 @@ class Hangman{
         this.mainContainer.append(wordContainer);
     }
 
+    createKeyboard() {
+        const keyboard = "abcdefghijklmnopqrstuvwxyz".split('').map(letter => {
+            const keyboardButton = document.createElement("button");
+            keyboardButton.innerHTML = letter;
+            return keyboardButton;
+        });
+        return keyboard;
+    }
+
+    drawKeyboard() {
+        const keyboardContainer = document.createElement("div");
+        keyboardContainer.className = "keyboard"; 
+        const keyboardButtons = this.createKeyboard();
+
+        keyboardContainer.append(...keyboardButtons);
+        this.mainContainer.append(keyboardContainer);
+    }
+
     drawButton() {
         const buttons = document.createElement("div");
         buttons.className = "reset-button"
@@ -62,6 +80,7 @@ class Hangman{
         this.drawGuessesStillLeft();
         this.drawClue();
         this.drawWord();
+        this.drawKeyboard();
         this.drawButton();
     }
 

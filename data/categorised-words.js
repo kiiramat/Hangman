@@ -147,10 +147,10 @@ const categorisedWords = {
         // "Cockroach",
         // "Centipede",
         // "Worm"
-    ],
-    "Country" : [
-        "Afghanistan",
-        // "Albania",
+    // ],
+    // "Country" : [
+        // "Afghanistan",
+        // // "Albania",
         // "Algeria",
         // "Andorra",
         // "Angola",

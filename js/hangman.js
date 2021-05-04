@@ -1,14 +1,16 @@
-class Hangman{
+class Hangman {
     constructor(selector) {
         this.mainContainer = document.querySelector(selector);
         this._randomClue = chooseRandom(Object.keys(categorisedWords));
         this._randomWord = chooseRandom(categorisedWords[this._randomClue]);
         this.wrongGuessesCount = 0;
+        this.hiddenWord = this._randomWord.split('').map(ignored => "_");
         
         //DOM Elements
         this.usedGuesses = null;
         this.clue = null;
         this.word = null;
+        this.keyboardButtons = null;
     }
 
     drawTitleElement() {
@@ -63,10 +65,21 @@ class Hangman{
         this.mainContainer.append(wordContainer);
     }
 
+    checkWordLettersAndPressedKeyboard(letter) {
+        const wordCharacters = this._randomWord.toLowerCase().split('');
+        wordCharacters.forEach((character, index) => {
+            if (character === letter && this.hiddenWord[index] === "_") {
+                this.hiddenWord[index] = letter;
+            } 
+        })
+        return this.hiddenWord;
+    }
+    
     createKeyboard() {
         const keyboard = "abcdefghijklmnopqrstuvwxyz".split('').map(letter => {
-            const keyboardButton = document.createElement("button");
-            keyboardButton.innerHTML = letter;
+            const keyboardButton = ElementUtilities.createButtonElement("keyboard-letter", letter, (event) => {
+                this.word.innerHTML = this.checkWordLettersAndPressedKeyboard(event.srcElement.innerHTML).join(' ');
+            });
             return keyboardButton;
         });
         return keyboard;
@@ -75,9 +88,9 @@ class Hangman{
     drawKeyboard() {
         const keyboardContainer = document.createElement("div");
         keyboardContainer.className = "keyboard"; 
-        const keyboardButtons = this.createKeyboard();
+        this.keyboardButtons = this.createKeyboard();
 
-        keyboardContainer.append(...keyboardButtons);
+        keyboardContainer.append(...this.keyboardButtons);
         this.mainContainer.append(keyboardContainer);
     }
 

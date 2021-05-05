@@ -8,6 +8,7 @@ class Hangman {
         
         //DOM Elements
         this.word = null;
+        this.usedGuesses = null;
     }
 
     drawTitleElement() {
@@ -26,14 +27,14 @@ class Hangman {
         text.className = "guesses-left";
         text.innerHTML = "Wrong Guesses: ";
 
-        const usedGuesses = document.createElement("span");
-        usedGuesses.innerHTML = this.countGuesses;
+        this.usedGuesses = document.createElement("span");
+        this.usedGuesses.innerHTML = this.countGuesses;
 
         const maxGuesses = document.createElement("span");
         maxGuesses.innerHTML = " of 6";
 
         guessesContainer.append(text);
-        text.append(usedGuesses);
+        text.append(this.usedGuesses);
         text.append(maxGuesses);
         this.mainContainer.append(guessesContainer);
     }
@@ -72,6 +73,8 @@ class Hangman {
         const keyboard = "abcdefghijklmnopqrstuvwxyz".split('').map(letter => {
             const keyboardButton = ElementUtilities.createButtonElement("keyboard-letter", letter, (event) => {
                 this.word.innerHTML = this.matchHiddenLettersAndKeyboardLetters(event.srcElement.innerHTML).join(' ');
+                this.countGuesses += 1;
+                this.usedGuesses.innerHTML = this.countGuesses;
             });
             return keyboardButton;
         });

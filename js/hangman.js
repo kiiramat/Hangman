@@ -72,9 +72,9 @@ class Hangman {
     createKeyboard() {
         const keyboard = "abcdefghijklmnopqrstuvwxyz".split('').map(letter => {
             const keyboardButton = ElementUtilities.createButtonElement("keyboard-letter", letter, (event) => {
-                this.word.innerHTML = this.matchHiddenLettersAndKeyboardLetters(event.srcElement.innerHTML).join(' ');
                 this.countGuesses += 1;
                 this.usedGuesses.innerHTML = this.countGuesses;
+                this.word.innerHTML = this.matchHiddenLettersAndKeyboardLetters(event.srcElement.innerHTML).join(' ');
             });
             return keyboardButton;
         });

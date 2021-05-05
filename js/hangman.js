@@ -1,16 +1,13 @@
 class Hangman {
     constructor(selector) {
         this.mainContainer = document.querySelector(selector);
+        this.countGuesses = 0;
         this._randomClue = RandomUtilities.chooseRandom(Object.keys(categorisedWords));
         this._randomWord = RandomUtilities.chooseRandom(categorisedWords[this._randomClue]);
-        this.wrongGuessesCount = 0;
         this.hiddenWord = RandomUtilities.hide(this._randomWord);
         
         //DOM Elements
-        this.usedGuesses = null;
-        this.clue = null;
         this.word = null;
-        this.keyboardButtons = null;
     }
 
     drawTitleElement() {
@@ -29,14 +26,14 @@ class Hangman {
         text.className = "guesses-left";
         text.innerHTML = "Wrong Guesses: ";
 
-        this.usedGuesses = document.createElement("span");
-        this.usedGuesses.innerHTML = this.wrongGuessesCount;
+        const usedGuesses = document.createElement("span");
+        usedGuesses.innerHTML = this.countGuesses;
 
         const maxGuesses = document.createElement("span");
         maxGuesses.innerHTML = " of 6";
 
         guessesContainer.append(text);
-        text.append(this.usedGuesses);
+        text.append(usedGuesses);
         text.append(maxGuesses);
         this.mainContainer.append(guessesContainer);
     }
@@ -44,28 +41,24 @@ class Hangman {
     drawClue() {
         const clueContainer = document.createElement("div");
         clueContainer.className = "clue"
-        this.clue = document.createElement("h2");
-        this.clue.innerHTML = "Clue: " + this._randomClue;
+        const clue = document.createElement("h2");
+        clue.innerHTML = "Clue: " + this._randomClue;
 
-        clueContainer.append(this.clue);
+        clueContainer.append(clue);
         this.mainContainer.append(clueContainer);
-    }
-
-    maskWord(word) {
-        return word.split('').map(ignored => "_").join(' ');
     }
 
     drawWord() {
         const wordContainer = document.createElement("div");
         wordContainer.className = "random-word";
         this.word = document.createElement("h1");
-        this.word.innerHTML = this.maskWord(this._randomWord);
+        this.word.innerHTML = RandomUtilities.hide(this._randomWord).join(' ');
 
         wordContainer.append(this.word);
         this.mainContainer.append(wordContainer);
     }
 
-    checkWordLettersAndPressedKeyboard(letter) {
+    matchHiddenLettersAndKeyboardLetters(letter) {
         const wordCharacters = this._randomWord.toLowerCase().split('');
         wordCharacters.forEach((character, index) => {
             if (character === letter && this.hiddenWord[index] === "_") {
@@ -78,7 +71,7 @@ class Hangman {
     createKeyboard() {
         const keyboard = "abcdefghijklmnopqrstuvwxyz".split('').map(letter => {
             const keyboardButton = ElementUtilities.createButtonElement("keyboard-letter", letter, (event) => {
-                this.word.innerHTML = this.checkWordLettersAndPressedKeyboard(event.srcElement.innerHTML).join(' ');
+                this.word.innerHTML = this.matchHiddenLettersAndKeyboardLetters(event.srcElement.innerHTML).join(' ');
             });
             return keyboardButton;
         });
@@ -88,17 +81,20 @@ class Hangman {
     drawKeyboard() {
         const keyboardContainer = document.createElement("div");
         keyboardContainer.className = "keyboard"; 
-        this.keyboardButtons = this.createKeyboard();
+        const keyboardButtons = this.createKeyboard();
 
-        keyboardContainer.append(...this.keyboardButtons);
+        keyboardContainer.append(...keyboardButtons);
         this.mainContainer.append(keyboardContainer);
     }
 
     reset() {
-        this.usedGuesses.innerHTML = "0";
-        this.clue.innerHTML = "Clue: " + this._randomClue;;
-        this.word.innerHTML = this.maskWord(this._randomWord);
-        //@TODO: reset keyboard
+        document.querySelector("[hangman-container]").innerHTML = ""
+        this.countGuesses = 0;
+        this._randomClue = RandomUtilities.chooseRandom(Object.keys(categorisedWords));
+        this._randomWord = RandomUtilities.chooseRandom(categorisedWords[this._randomClue]);
+        this.word.innerHTML = RandomUtilities.hide(this._randomWord).join(' ');
+        //@TODO: reset keyboard 
+        this.draw();
     }
 
     drawResetButton() {

@@ -1,10 +1,10 @@
 class Hangman {
     constructor(selector) {
         this.mainContainer = document.querySelector(selector);
-        this._randomClue = chooseRandom(Object.keys(categorisedWords));
-        this._randomWord = chooseRandom(categorisedWords[this._randomClue]);
+        this._randomClue = RandomUtilities.chooseRandom(Object.keys(categorisedWords));
+        this._randomWord = RandomUtilities.chooseRandom(categorisedWords[this._randomClue]);
         this.wrongGuessesCount = 0;
-        this.hiddenWord = this._randomWord.split('').map(ignored => "_");
+        this.hiddenWord = RandomUtilities.hide(this._randomWord);
         
         //DOM Elements
         this.usedGuesses = null;

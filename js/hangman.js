@@ -7,8 +7,11 @@ class Hangman {
         this.hiddenWord = RandomUtilities.hide(this._randomWord);
         
         //DOM Elements
-        this.word = null;
         this.usedGuesses = null;
+        this.wordContainer = null;
+        this.word = null;
+        this.loseMessageContainer = null;
+        this.keyboardContainer = null;
     }
 
     drawTitleElement() {
@@ -50,13 +53,34 @@ class Hangman {
     }
 
     drawWord() {
-        const wordContainer = document.createElement("div");
-        wordContainer.className = "random-word";
+        this.wordContainer = document.createElement("div");
+        this.wordContainer.className = "random-word";
         this.word = document.createElement("h1");
         this.word.innerHTML = RandomUtilities.hide(this._randomWord).join(' ');
 
-        wordContainer.append(this.word);
-        this.mainContainer.append(wordContainer);
+        this.wordContainer.append(this.word);
+        this.mainContainer.append(this.wordContainer);
+    }
+
+    drawYouLoseMessage() {
+        this.loseMessageContainer = document.createElement("div");
+        this.loseMessageContainer.className = "lose-message hidden";
+        const loseMessage = document.createElement("p");
+        loseMessage.innerHTML = "You lost!";
+        const answer = document.createElement("p");
+        answer.innerHTML = `The answer was: ${this._randomWord}`;
+
+        this.loseMessageContainer.append(loseMessage);
+        this.loseMessageContainer.append(answer);
+        this.mainContainer.append(this.loseMessageContainer);
+    }
+
+    reachedMaxGuesses(count) {
+        if (count >= 6) {
+            this.wordContainer.classList.add("hidden");
+            this.keyboardContainer.classList.add("hidden");
+            this.loseMessageContainer.classList.remove("hidden");
+        }
     }
 
     matchHiddenLettersAndKeyboardLetters(letter) {
@@ -75,6 +99,7 @@ class Hangman {
                 this.countGuesses += 1;
                 this.usedGuesses.innerHTML = this.countGuesses;
                 this.word.innerHTML = this.matchHiddenLettersAndKeyboardLetters(event.srcElement.innerHTML).join(' ');
+                this.reachedMaxGuesses(this.countGuesses);
             });
             return keyboardButton;
         });
@@ -82,12 +107,12 @@ class Hangman {
     }
 
     drawKeyboard() {
-        const keyboardContainer = document.createElement("div");
-        keyboardContainer.className = "keyboard"; 
+        this.keyboardContainer = document.createElement("div");
+        this.keyboardContainer.className = "keyboard"; 
         const keyboardButtons = this.createKeyboard();
 
-        keyboardContainer.append(...keyboardButtons);
-        this.mainContainer.append(keyboardContainer);
+        this.keyboardContainer.append(...keyboardButtons);
+        this.mainContainer.append(this.keyboardContainer);
     }
 
     reset() {
@@ -113,6 +138,7 @@ class Hangman {
         this.drawUsedGuesses();
         this.drawClue();
         this.drawWord();
+        this.drawYouLoseMessage()
         this.drawKeyboard();
         this.drawResetButton();
     }

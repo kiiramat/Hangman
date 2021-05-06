@@ -1,3 +1,8 @@
 .reset-button {
     margin-top: 10px;
 }
+
+.hidden {
+    display: none;
+    width: 0px;
+}

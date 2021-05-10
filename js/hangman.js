@@ -27,8 +27,8 @@ class Hangman {
 
     drawUsedGuesses() {
         const guessesContainer = document.createElement("div");
+        guessesContainer.className = "guesses-left";
         const text = document.createElement("p");
-        text.className = "guesses-left";
         text.innerHTML = "Wrong Guesses: ";
 
         this.usedGuesses = document.createElement("span");

@@ -10,6 +10,7 @@ class Hangman {
         this.usedGuesses = null;
         this.wordContainer = null;
         this.word = null;
+        this.winMessageContainer = null;
         this.loseMessageContainer = null;
         this.keyboardContainer = null;
     }
@@ -75,11 +76,28 @@ class Hangman {
         this.mainContainer.append(this.loseMessageContainer);
     }
 
-    reachedMaxGuesses(count) {
-        if (count >= 6) {
+    drawYouWinMessage() {
+        this.winMessageContainer = document.createElement("div");
+        this.winMessageContainer.className = "win-message hidden";
+        const winMessage = document.createElement("p");
+        winMessage.innerHTML = "You won!";
+
+        this.winMessageContainer.append(winMessage);
+        this.mainContainer.append(this.winMessageContainer);
+    }
+
+    lostGame(reachedMaxGuesses) {
+        if (reachedMaxGuesses >= 6) {
             this.wordContainer.classList.add("hidden");
             this.keyboardContainer.classList.add("hidden");
             this.loseMessageContainer.classList.remove("hidden");
+        }
+    }
+
+    wonGame(word) {
+        if (word.indexOf("_") === -1) {
+            this.keyboardContainer.classList.add("hidden");
+            this.winMessageContainer.classList.remove("hidden");
         }
     }
 
@@ -97,9 +115,9 @@ class Hangman {
         const keyboard = "abcdefghijklmnopqrstuvwxyz".split('').map(letter => {
             const keyboardButton = ElementUtilities.createButtonElement("keyboard-letter", letter, (event) => {
                 this.usedGuesses.innerHTML = ++this.countGuesses;
-                console.log(this.countGuesses);
                 this.word.innerHTML = this.matchHiddenLettersAndKeyboardLetters(event.srcElement.innerHTML).join(' ');
-                this.reachedMaxGuesses(this.countGuesses);
+                this.wonGame(this.hiddenWord);
+                this.lostGame(this.countGuesses);
             });
             return keyboardButton;
         });
@@ -138,6 +156,7 @@ class Hangman {
         this.drawUsedGuesses();
         this.drawClue();
         this.drawWord();
+        this.drawYouWinMessage();
         this.drawYouLoseMessage()
         this.drawKeyboard();
         this.drawResetButton();

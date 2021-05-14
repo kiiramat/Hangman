@@ -27,6 +27,14 @@ class Hangman {
         this.mainContainer.append(headerContainer);
     }
 
+    drawGallow() {
+        const gallowContainer = document.createElement("img");
+        gallowContainer.className = "gallow-image"
+        gallowContainer.src = "../images/1.svg"
+
+        this.mainContainer.append(gallowContainer);
+    }
+
     drawUsedGuesses() {
         const guessesContainer = document.createElement("div");
         guessesContainer.className = "guesses-container";
@@ -175,6 +183,7 @@ class Hangman {
 
     draw() {
         this.drawTitleElement();
+        this.drawGallow();
         this.drawUsedGuesses();
         this.drawClue();
         this.drawWord();

@@ -8,6 +8,11 @@
     font-family: 'Pangolin', cursive;
 }
 
+.gallow-image {
+    display:block;
+    margin:auto;
+}
+
 .win-message-container,
 .lose-message-container {
     font-size: 24px;

@@ -19,7 +19,7 @@ class Hangman {
 
     drawTitleElement() {
         const headerContainer = document.createElement("div");
-        headerContainer.className = "title";
+        headerContainer.className = "title-container";
         const title = document.createElement("h1");
         title.innerHTML = "Hangman";
 
@@ -29,7 +29,7 @@ class Hangman {
 
     drawUsedGuesses() {
         const guessesContainer = document.createElement("div");
-        guessesContainer.className = "guesses-left";
+        guessesContainer.className = "guesses-container";
         const text = document.createElement("p");
         text.innerHTML = "Wrong Guesses: ";
 
@@ -47,7 +47,7 @@ class Hangman {
 
     drawClue() {
         const clueContainer = document.createElement("div");
-        clueContainer.className = "clue"
+        clueContainer.className = "clue-container"
         const clue = document.createElement("h2");
         clue.innerHTML = "Clue: " + this._randomClue;
 
@@ -57,7 +57,7 @@ class Hangman {
 
     drawWord() {
         this.wordContainer = document.createElement("div");
-        this.wordContainer.className = "random-word";
+        this.wordContainer.className = "word-container";
         this.word = document.createElement("h1");
         this.word.innerHTML = RandomUtilities.hide(this._randomWord).join(' ');
 
@@ -67,20 +67,25 @@ class Hangman {
 
     drawYouLoseMessage() {
         this.loseMessageContainer = document.createElement("div");
-        this.loseMessageContainer.className = "lose-message hidden";
+        this.loseMessageContainer.className = "lose-message-container hidden";
         const loseMessage = document.createElement("p");
         loseMessage.innerHTML = "You lost!";
         const answer = document.createElement("p");
-        answer.innerHTML = `The answer was: ${this._randomWord}`;
+        answer.innerHTML = "The answer was: ";
+        const randomWordElement = document.createElement("span");
+        randomWordElement.className = "random-word-element";
+        randomWordElement.innerHTML = ` ${this._randomWord} `
+
 
         this.loseMessageContainer.append(loseMessage);
         this.loseMessageContainer.append(answer);
+        answer.append(randomWordElement);
         this.mainContainer.append(this.loseMessageContainer);
     }
 
     drawYouWinMessage() {
         this.winMessageContainer = document.createElement("div");
-        this.winMessageContainer.className = "win-message hidden";
+        this.winMessageContainer.className = "win-message-container hidden";
         const winMessage = document.createElement("p");
         winMessage.innerHTML = "You won!";
 
@@ -139,7 +144,7 @@ class Hangman {
 
     drawKeyboard() {
         this.keyboardContainer = document.createElement("div");
-        this.keyboardContainer.className = "keyboard"; 
+        this.keyboardContainer.className = "keyboard-container"; 
         const keyboardButtons = this.createKeyboard();
 
         this.keyboardContainer.append(...keyboardButtons);
@@ -158,11 +163,14 @@ class Hangman {
     }
 
     drawResetButton() {
+        const resetButtonContainer = document.createElement("div");
+        resetButtonContainer.className = "reset-button-container";
         const resetButton = ElementUtilities.createButtonElement("reset-button", "Reset", () => {
             this.reset();
         });
         
-        this.mainContainer.append(resetButton);
+        resetButtonContainer.append(resetButton);
+        this.mainContainer.append(resetButtonContainer);
     }
 
     draw() {

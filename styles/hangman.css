@@ -1,21 +1,54 @@
+.title-container,
+.guesses-container,
+.clue-container,
+.word-container,
+.win-message-container,
+.lose-message-container {
+    text-align: center;
+    font-family: 'Pangolin', cursive;
+}
+
+.win-message-container,
+.lose-message-container {
+    font-size: 24px;
+}
+
+.word-container {
+    margin-bottom: 40px;
+}
+
+.random-word-element {
+    border: 2px solid rgb(0, 0, 0);
+    padding: 10px;
+}
+
+.keyboard-container,
+.reset-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.keyboard-container {
+    margin-bottom: 40px;
+}
+
+.keyboard-letter,
 .reset-button {
-    margin-top: 10px;
-}
-
-.hidden {
-    display: none;
-    width: 0px;
-}
-
-.keyboard-letter {
+    font-family: 'Pangolin', cursive;
+    font-size: 24px;
     background: none;
     border-radius: 8px;
     outline:none;
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.45);
     margin:2px;
     border: 1px solid rgb(192, 192, 192);
+}
+
+.reset-button {
+    width: 500px;
+    height: 40px;
 }
 
 .keyboard-letter:hover {
@@ -32,4 +65,15 @@
 
 .button-red {
     background-color: #f86753;
+}
+
+.reset-button {
+    font-family: 'Pangolin', cursive;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+    width: 0px;
 }

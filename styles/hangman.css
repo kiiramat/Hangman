@@ -6,3 +6,30 @@
     display: none;
     width: 0px;
 }
+
+.keyboard-letter {
+    background: none;
+    border-radius: 8px;
+    outline:none;
+    width: 35px;
+    height: 35px;
+    box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.45);
+    margin:2px;
+    border: 1px solid rgb(192, 192, 192);
+}
+
+.keyboard-letter:hover {
+    box-shadow: 2px 2px 2px 1px rgba(0,0,0,0.45);
+}
+
+.keyboard-letter:active {
+    box-shadow: none;
+}
+
+.button-green {
+    background-color: #a3d4a4;
+}
+
+.button-red {
+    background-color: #f86753;
+}

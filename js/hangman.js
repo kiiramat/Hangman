@@ -5,6 +5,7 @@ class Hangman {
         this._randomClue = RandomUtilities.chooseRandom(Object.keys(categorisedWords));
         this._randomWord = RandomUtilities.chooseRandom(categorisedWords[this._randomClue]);
         this.hiddenWord = RandomUtilities.hide(this._randomWord);
+        this.matchingLetters;
         
         //DOM Elements
         this.usedGuesses = null;
@@ -105,6 +106,7 @@ class Hangman {
         const wordCharacters = this._randomWord.toLowerCase().split('');
         wordCharacters.forEach((character, index) => {
             if (character === letter && this.hiddenWord[index] === "_") {
+                this.matchingLetters = true;
                 this.hiddenWord[index] = letter;
             } 
         })
@@ -114,8 +116,16 @@ class Hangman {
     createKeyboard() {
         const keyboard = "abcdefghijklmnopqrstuvwxyz".split('').map(letter => {
             const keyboardButton = ElementUtilities.createButtonElement("keyboard-letter", letter, (event) => {
-                this.usedGuesses.innerHTML = ++this.countGuesses;
                 this.word.innerHTML = this.matchHiddenLettersAndKeyboardLetters(event.srcElement.innerHTML).join(' ');
+
+                if (this.matchingLetters) {
+                    keyboardButton.classList.add("button-green");
+                    this.matchingLetters = false;
+                } else {
+                    keyboardButton.classList.add("button-red");
+                    this.usedGuesses.innerHTML = ++this.countGuesses;
+                }
+
                 this.wonGame(this.hiddenWord);
                 this.lostGame(this.countGuesses);
             });
@@ -138,8 +148,8 @@ class Hangman {
         this.countGuesses = 0;
         this._randomClue = RandomUtilities.chooseRandom(Object.keys(categorisedWords));
         this._randomWord = RandomUtilities.chooseRandom(categorisedWords[this._randomClue]);
+        this.hiddenWord = RandomUtilities.hide(this._randomWord); 
         this.word.innerHTML = RandomUtilities.hide(this._randomWord).join(' ');
-        //@TODO: reset keyboard 
         this.draw();
     }
 

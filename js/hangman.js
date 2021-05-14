@@ -5,7 +5,8 @@ class Hangman {
         this._randomClue = RandomUtilities.chooseRandom(Object.keys(categorisedWords));
         this._randomWord = RandomUtilities.chooseRandom(categorisedWords[this._randomClue]);
         this.hiddenWord = RandomUtilities.hide(this._randomWord);
-        this.matchingLetters;
+        this.pressedKeys = [];
+        this.matchingLetters = false;
         
         //DOM Elements
         this.usedGuesses = null;
@@ -116,8 +117,10 @@ class Hangman {
     createKeyboard() {
         const keyboard = "abcdefghijklmnopqrstuvwxyz".split('').map(letter => {
             const keyboardButton = ElementUtilities.createButtonElement("keyboard-letter", letter, (event) => {
-                this.word.innerHTML = this.matchHiddenLettersAndKeyboardLetters(event.srcElement.innerHTML).join(' ');
+                if (this.pressedKeys.indexOf(event.srcElement.innerHTML) !== -1 && this.pressedKeys.length !== 0) { return }
+                this.pressedKeys.push(event.srcElement.innerHTML);
 
+                this.word.innerHTML = this.matchHiddenLettersAndKeyboardLetters(event.srcElement.innerHTML).join(' ');
                 if (this.matchingLetters) {
                     keyboardButton.classList.add("button-green");
                     this.matchingLetters = false;

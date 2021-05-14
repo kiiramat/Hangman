@@ -153,6 +153,7 @@ class Hangman {
         this._randomWord = RandomUtilities.chooseRandom(categorisedWords[this._randomClue]);
         this.hiddenWord = RandomUtilities.hide(this._randomWord); 
         this.word.innerHTML = RandomUtilities.hide(this._randomWord).join(' ');
+        this.pressedKeys = [];
         this.draw();
     }
 

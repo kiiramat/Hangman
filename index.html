@@ -1,18 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hangman</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap" rel="stylesheet"> 
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" type="text/css" href="styles/hangman.css" />
-</head>
-<body>
+  </head>
+  <body>
     <div id="hangman-page">
-        <div hangman-container>
-            
-        </div>
+        <svg hangman-image
+          xmlns:dc="http://purl.org/dc/elements/1.1/"
+          xmlns:cc="http://creativecommons.org/ns#"
+          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns="http://www.w3.org/2000/svg"
+          width="400"
+          height="400"
+          viewBox="0 0 400 400"
+          style="fill:white; stroke:black; stroke-width: 2px;">
+          <g id="layer1" transform="translate(0,5)">
+            <rect
+              id="rect10"
+              width="30"
+              height="320"
+              x="55"
+              y="25"/>
+
+            <path
+              d="M 10,345.54165 H 390"
+              id="path4526"/>
+            <rect
+              id="rect4528"
+              width="209"
+              height="30"
+              x="55"
+              y="-4"/>
+            <rect
+              id="rect4530"
+              width="133"
+              height="26"
+              x="-35"
+              y="111"
+              transform="rotate(-45) translate(10 0)"/>
+            <path
+              d="m 220,25 v 55"
+              id="path4534"/>
+            <circle
+              id="guess1"
+              cx="220"
+              cy="115"
+              r="35"
+              style="opacity:0"/>
+            <path
+              d="m 220,150 v 115"
+              id="guess2"
+              style="opacity:0"/>
+            <path
+              d="m 220,265 40,40"
+              id="guess5"
+              style="opacity:0"/>
+            <path
+              d="m 220,265 -40,40"
+              id="guess6"
+              style="opacity:0"/>
+            <path
+              id="guess3"
+              d="m 220,170 40,40"
+              style="opacity:0"/>
+            <path
+              id="guess4"
+              d="m 220,170 -40,40"
+              style="opacity:0"/>
+          </g>
+        </svg>
+
+      <div hangman-container></div>
+
     </div>
 
     <!-- data -->
@@ -22,11 +90,10 @@
     <script src="js/utils/random-utils.js"></script>
     <script src="js/utils/element-utils.js"></script>
 
-
     <!-- application code -->
     <script src="js/hangman.js"></script>
 
     <!-- entrypoint -->
     <script src="js/main.js"></script>
-</body>
+  </body>
 </html>

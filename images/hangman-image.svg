@@ -15,7 +15,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
-   sodipodi:docname="1.svg">
+   sodipodi:docname="7.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="129.31244"
-     inkscape:cy="256.97648"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="308.53372"
+     inkscape:cy="94.277625"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -52,7 +52,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -93,5 +93,42 @@
        d="m 220,25.54165 v 55"
        id="path4534"
        inkscape:connector-curvature="0" />
+    <circle
+       style="stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;fill:#ffffff;fill-opacity:0.9951691;stroke:#000000;stroke-opacity:1"
+       id="head"
+       cx="220"
+       cy="115.54165"
+       r="35"
+       inkscape:label="#path818" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 220,150.54165 v 115"
+       id="body"
+       inkscape:connector-curvature="0"
+       inkscape:label="#path851" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.28571439;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 220,265.54165 40,40"
+       id="left-leg"
+       inkscape:connector-curvature="0"
+       inkscape:label="#path958" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.28571439;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 220,265.54165 -40,40"
+       id="right-leg"
+       inkscape:connector-curvature="0"
+       inkscape:label="#path995" />
+    <path
+       inkscape:connector-curvature="0"
+       id="left-arm"
+       d="m 220,170.54165 40,40"
+       style="fill:none;stroke:#000000;stroke-width:2.28571439;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:label="#path823" />
+    <path
+       inkscape:connector-curvature="0"
+       id="right-arm"
+       d="m 220,170.54165 -40,40"
+       style="fill:none;stroke:#000000;stroke-width:2.28571439;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:label="#path825" />
   </g>
 </svg>

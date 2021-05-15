@@ -27,12 +27,11 @@ class Hangman {
         this.mainContainer.append(headerContainer);
     }
 
-    drawGallow() {
-        const gallowContainer = document.createElement("img");
-        gallowContainer.className = "gallow-image"
-        gallowContainer.src = "../images/1.svg"
+    drawHangman() {
+        const hangmanImageContainer = document.querySelector('[hangman-image]');
+        hangmanImageContainer.setAttributeNS(null, 'class', 'hangman-image');
 
-        this.mainContainer.append(gallowContainer);
+        this.mainContainer.append(hangmanImageContainer);
     }
 
     drawUsedGuesses() {
@@ -140,6 +139,8 @@ class Hangman {
                 } else {
                     keyboardButton.classList.add("button-red");
                     this.usedGuesses.innerHTML = ++this.countGuesses;
+                    const addHumanParts = document.querySelector(`#guess${this.countGuesses}`);
+                    addHumanParts.setAttributeNS(null, "style", "opacity:1");
                 }
 
                 this.wonGame(this.hiddenWord);
@@ -149,6 +150,8 @@ class Hangman {
         });
         return keyboard;
     }
+
+
 
     drawKeyboard() {
         this.keyboardContainer = document.createElement("div");
@@ -183,7 +186,7 @@ class Hangman {
 
     draw() {
         this.drawTitleElement();
-        this.drawGallow();
+        this.drawHangman();
         this.drawUsedGuesses();
         this.drawClue();
         this.drawWord();

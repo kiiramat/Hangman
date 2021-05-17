@@ -142,8 +142,8 @@ class Hangman {
                     keyboardButton.classList.add("button-red");
                     this.usedGuesses.innerHTML = ++this.countGuesses;
                     const humanParts = document.querySelector(`#guess${this.countGuesses}`);
-                    this.guessesID.push(`#guess${this.countGuesses}`);
                     humanParts.setAttributeNS(null, "style", "opacity:1");
+                    this.guessesID.push(`#guess${this.countGuesses}`);
                 }
 
                 this.wonGame(this.hiddenWord);
@@ -166,11 +166,11 @@ class Hangman {
     }
 
     reset() {
+        this.hangmanImage = document.querySelector('[hangman-image]');
         this.guessesID.forEach(id => {
             this.hangmanImage.querySelector(id).setAttributeNS(null, "style", "opacity:0");
         })
-        this.hangmanImage = document.querySelector('[hangman-image]');
-
+        
         this.mainContainer.innerHTML = "";
         this.countGuesses = 0;
         this._randomClue = RandomUtilities.chooseRandom(Object.keys(categorisedWords));

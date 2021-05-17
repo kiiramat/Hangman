@@ -7,6 +7,8 @@ class Hangman {
         this.hiddenWord = RandomUtilities.hide(this._randomWord);
         this.pressedKeysCollection = [];
         this.matchingLetters = false;
+        this.hangmanImage = document.querySelector('[hangman-image]');
+        this.guessesID = [];
         
         //DOM Elements
         this.usedGuesses = null;
@@ -28,7 +30,7 @@ class Hangman {
     }
 
     drawHangman() {
-        const hangmanImageContainer = document.querySelector('[hangman-image]');
+        const hangmanImageContainer = this.hangmanImage;
         hangmanImageContainer.setAttributeNS(null, 'class', 'hangman-image');
 
         this.mainContainer.append(hangmanImageContainer);
@@ -139,8 +141,9 @@ class Hangman {
                 } else {
                     keyboardButton.classList.add("button-red");
                     this.usedGuesses.innerHTML = ++this.countGuesses;
-                    const addHumanParts = document.querySelector(`#guess${this.countGuesses}`);
-                    addHumanParts.setAttributeNS(null, "style", "opacity:1");
+                    const humanParts = document.querySelector(`#guess${this.countGuesses}`);
+                    this.guessesID.push(`#guess${this.countGuesses}`);
+                    humanParts.setAttributeNS(null, "style", "opacity:1");
                 }
 
                 this.wonGame(this.hiddenWord);
@@ -163,13 +166,19 @@ class Hangman {
     }
 
     reset() {
-        document.querySelector("[hangman-container]").innerHTML = ""
+        this.guessesID.forEach(id => {
+            this.hangmanImage.querySelector(id).setAttributeNS(null, "style", "opacity:0");
+        })
+        this.hangmanImage = document.querySelector('[hangman-image]');
+
+        this.mainContainer.innerHTML = "";
         this.countGuesses = 0;
         this._randomClue = RandomUtilities.chooseRandom(Object.keys(categorisedWords));
         this._randomWord = RandomUtilities.chooseRandom(categorisedWords[this._randomClue]);
         this.hiddenWord = RandomUtilities.hide(this._randomWord); 
         this.word.innerHTML = RandomUtilities.hide(this._randomWord).join(' ');
         this.pressedKeysCollection = [];
+
         this.draw();
     }
 

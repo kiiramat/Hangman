@@ -2,6 +2,7 @@ class Hangman {
     constructor(selector) {
         this.mainContainer = document.querySelector(selector);
         this.countGuesses = 0;
+        this.maxGuesses = 6;
         this._randomClue = RandomUtilities.chooseRandom(Object.keys(categorisedWords));
         this._randomWord = RandomUtilities.chooseRandom(categorisedWords[this._randomClue]);
         this.hiddenWord = RandomUtilities.hide(this._randomWord);
@@ -19,6 +20,18 @@ class Hangman {
         this.keyboardContainer = null;
     }
 
+    draw() {
+        this.drawTitleElement();
+        this.relocateHangmanDrawing();
+        this.drawUsedGuesses();
+        this.drawClue();
+        this.drawWord();
+        this.drawYouWinMessage();
+        this.drawYouLoseMessage()
+        this.drawKeyboard();
+        this.drawResetButton();
+    }
+
     drawTitleElement() {
         const headerContainer = document.createElement("div");
         headerContainer.className = "title-container";
@@ -29,7 +42,7 @@ class Hangman {
         this.mainContainer.append(headerContainer);
     }
 
-    drawHangman() {
+    relocateHangmanDrawing() {
         const hangmanImageContainer = this.hangmanImage;
         hangmanImageContainer.setAttributeNS(null, 'class', 'hangman-image');
 
@@ -46,7 +59,7 @@ class Hangman {
         this.usedGuesses.innerHTML = this.countGuesses;
 
         const maxGuesses = document.createElement("span");
-        maxGuesses.innerHTML = " of 6";
+        maxGuesses.innerHTML = ` of ${this.maxGuesses}`;
 
         guessesContainer.append(text);
         text.append(this.usedGuesses);
@@ -74,6 +87,17 @@ class Hangman {
         this.mainContainer.append(this.wordContainer);
     }
 
+    drawYouWinMessage() {
+        this.winMessageContainer = document.createElement("div");
+        this.winMessageContainer.className = "win-message-container hidden";
+        const winMessage = document.createElement("p");
+        winMessage.innerHTML = "You won!";
+
+        this.winMessageContainer.append(winMessage);
+        this.mainContainer.append(this.winMessageContainer);
+    }
+
+
     drawYouLoseMessage() {
         this.loseMessageContainer = document.createElement("div");
         this.loseMessageContainer.className = "lose-message-container hidden";
@@ -92,58 +116,33 @@ class Hangman {
         this.mainContainer.append(this.loseMessageContainer);
     }
 
-    drawYouWinMessage() {
-        this.winMessageContainer = document.createElement("div");
-        this.winMessageContainer.className = "win-message-container hidden";
-        const winMessage = document.createElement("p");
-        winMessage.innerHTML = "You won!";
+    drawKeyboard() {
+        this.keyboardContainer = document.createElement("div");
+        this.keyboardContainer.className = "keyboard-container"; 
+        const keyboardButtons = this.createKeyboard();
 
-        this.winMessageContainer.append(winMessage);
-        this.mainContainer.append(this.winMessageContainer);
-    }
-
-    lostGame(reachedMaxGuesses) {
-        if (reachedMaxGuesses >= 6) {
-            this.wordContainer.classList.add("hidden");
-            this.keyboardContainer.classList.add("hidden");
-            this.loseMessageContainer.classList.remove("hidden");
-        }
-    }
-
-    wonGame(word) {
-        if (word.indexOf("_") === -1) {
-            this.keyboardContainer.classList.add("hidden");
-            this.winMessageContainer.classList.remove("hidden");
-        }
-    }
-
-    matchHiddenLettersAndKeyboardLetters(letter) {
-        const wordCharacters = this._randomWord.toLowerCase().split('');
-        wordCharacters.forEach((character, index) => {
-            if (character === letter && this.hiddenWord[index] === "_") {
-                this.matchingLetters = true;
-                this.hiddenWord[index] = letter;
-            } 
-        })
-        return this.hiddenWord;
+        this.keyboardContainer.append(...keyboardButtons);
+        this.mainContainer.append(this.keyboardContainer);
     }
     
     createKeyboard() {
         const keyboard = "abcdefghijklmnopqrstuvwxyz".split('').map(letter => {
             const keyboardButton = ElementUtilities.createButtonElement("keyboard-letter", letter, (event) => {
-                if (this.pressedKeysCollection.indexOf(event.srcElement.innerHTML) !== -1 && this.pressedKeysCollection.length !== 0) { return }
-                this.pressedKeysCollection.push(event.srcElement.innerHTML);
+                const letter = event.srcElement.innerHTML;
+                if (this.hasLetterBeenPressed(letter)) {
+                    return;
+                };
+                this.pressedKeysCollection.push(letter);
 
-                this.word.innerHTML = this.matchHiddenLettersAndKeyboardLetters(event.srcElement.innerHTML).join(' ');
-                if (this.matchingLetters) {
+                const replacedWord = this.replaceWithLetter(letter).join(' ');
+                const matchingLetterFound = this.word.innerHTML !== replacedWord;
+                this.word.innerHTML = replacedWord;
+                if (matchingLetterFound) {
                     keyboardButton.classList.add("button-green");
-                    this.matchingLetters = false;
                 } else {
                     keyboardButton.classList.add("button-red");
                     this.usedGuesses.innerHTML = ++this.countGuesses;
-                    const humanParts = document.querySelector(`#guess${this.countGuesses}`);
-                    humanParts.setAttributeNS(null, "style", "opacity:1");
-                    this.guessesID.push(`#guess${this.countGuesses}`);
+                    this.showHumanPart(this.countGuesses);
                 }
 
                 this.wonGame(this.hiddenWord);
@@ -154,32 +153,38 @@ class Hangman {
         return keyboard;
     }
 
-
-
-    drawKeyboard() {
-        this.keyboardContainer = document.createElement("div");
-        this.keyboardContainer.className = "keyboard-container"; 
-        const keyboardButtons = this.createKeyboard();
-
-        this.keyboardContainer.append(...keyboardButtons);
-        this.mainContainer.append(this.keyboardContainer);
+    hasLetterBeenPressed(letter) {
+        return this.pressedKeysCollection.indexOf(letter) !== -1;
     }
 
-    reset() {
-        this.hangmanImage = document.querySelector('[hangman-image]');
-        this.guessesID.forEach(id => {
-            this.hangmanImage.querySelector(id).setAttributeNS(null, "style", "opacity:0");
+    replaceWithLetter(letter) {
+        const wordCharacters = this._randomWord.toLowerCase().split('');
+        wordCharacters.forEach((character, index) => {
+            if (character === letter && this.hiddenWord[index] === "_") {
+                this.hiddenWord[index] = letter;
+            } 
         })
-        
-        this.mainContainer.innerHTML = "";
-        this.countGuesses = 0;
-        this._randomClue = RandomUtilities.chooseRandom(Object.keys(categorisedWords));
-        this._randomWord = RandomUtilities.chooseRandom(categorisedWords[this._randomClue]);
-        this.hiddenWord = RandomUtilities.hide(this._randomWord); 
-        this.word.innerHTML = RandomUtilities.hide(this._randomWord).join(' ');
-        this.pressedKeysCollection = [];
+        return this.hiddenWord;
+    }
 
-        this.draw();
+    showHumanPart(guessCount) {
+        const humanParts = document.querySelector(`[guess="${guessCount}"]`);
+        humanParts.setAttributeNS(null, "style", "opacity:1");
+    }
+
+    wonGame(word) {
+        if (word.indexOf("_") === -1) {
+            this.keyboardContainer.classList.add("hidden");
+            this.winMessageContainer.classList.remove("hidden");
+        }
+    }
+
+    lostGame(guesses) {
+        if (guesses >= this.maxGuesses) {
+            this.wordContainer.classList.add("hidden");
+            this.keyboardContainer.classList.add("hidden");
+            this.loseMessageContainer.classList.remove("hidden");
+        }
     }
 
     drawResetButton() {
@@ -193,16 +198,22 @@ class Hangman {
         this.mainContainer.append(resetButtonContainer);
     }
 
-    draw() {
-        this.drawTitleElement();
-        this.drawHangman();
-        this.drawUsedGuesses();
-        this.drawClue();
-        this.drawWord();
-        this.drawYouWinMessage();
-        this.drawYouLoseMessage()
-        this.drawKeyboard();
-        this.drawResetButton();
+    reset() {
+        this.resetHangmanImage();
+        this.mainContainer.innerHTML = "";
+        this.countGuesses = 0;
+        this._randomClue = RandomUtilities.chooseRandom(Object.keys(categorisedWords));
+        this._randomWord = RandomUtilities.chooseRandom(categorisedWords[this._randomClue]);
+        this.hiddenWord = RandomUtilities.hide(this._randomWord); 
+        this.word.innerHTML = RandomUtilities.hide(this._randomWord).join(' ');
+        this.pressedKeysCollection = [];
+
+        this.draw();
     }
 
+    resetHangmanImage() {
+        [...document.querySelectorAll(`[guess]`)].forEach(element => {
+            element.setAttributeNS(null, "style", "opacity:0");
+        })
+    }
 }

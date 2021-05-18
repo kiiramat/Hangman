@@ -109,7 +109,6 @@ class Hangman {
         randomWordElement.className = "random-word-element";
         randomWordElement.innerHTML = ` ${this._randomWord} `
 
-
         this.loseMessageContainer.append(loseMessage);
         this.loseMessageContainer.append(answer);
         answer.append(randomWordElement);
@@ -124,33 +123,35 @@ class Hangman {
         this.keyboardContainer.append(...keyboardButtons);
         this.mainContainer.append(this.keyboardContainer);
     }
-    
+
     createKeyboard() {
         const keyboard = "abcdefghijklmnopqrstuvwxyz".split('').map(letter => {
-            const keyboardButton = ElementUtilities.createButtonElement("keyboard-letter", letter, (event) => {
-                const letter = event.srcElement.innerHTML;
-                if (this.hasLetterBeenPressed(letter)) {
-                    return;
-                };
-                this.pressedKeysCollection.push(letter);
-
-                const replacedWord = this.replaceWithLetter(letter).join(' ');
-                const matchingLetterFound = this.word.innerHTML !== replacedWord;
-                this.word.innerHTML = replacedWord;
-                if (matchingLetterFound) {
-                    keyboardButton.classList.add("button-green");
-                } else {
-                    keyboardButton.classList.add("button-red");
-                    this.usedGuesses.innerHTML = ++this.countGuesses;
-                    this.showHumanPart(this.countGuesses);
-                }
-
-                this.wonGame(this.hiddenWord);
-                this.lostGame(this.countGuesses);
-            });
-            return keyboardButton;
+            return ElementUtilities.createButtonElement("keyboard-letter", letter, this.keyListener.bind(this));
         });
         return keyboard;
+    }
+    
+    keyListener(event) {
+        const keyboardButton = event.srcElement;
+        const letter = keyboardButton.innerHTML;
+        if (this.hasLetterBeenPressed(letter)) {
+            return;
+        };
+        this.pressedKeysCollection.push(letter);
+
+        const replacedWord = this.replaceWithLetter(letter).join(' ');
+        const matchingLetterFound = this.word.innerHTML !== replacedWord;
+        this.word.innerHTML = replacedWord;
+        if (matchingLetterFound) {
+            keyboardButton.classList.add("button-green");
+        } else {
+            keyboardButton.classList.add("button-red");
+            this.usedGuesses.innerHTML = ++this.countGuesses;
+            this.showHumanPart(this.countGuesses);
+        }
+
+        this.wonGame(this.hiddenWord);
+        this.lostGame(this.countGuesses);
     }
 
     hasLetterBeenPressed(letter) {
@@ -163,7 +164,7 @@ class Hangman {
             if (character === letter && this.hiddenWord[index] === "_") {
                 this.hiddenWord[index] = letter;
             } 
-        })
+        });
         return this.hiddenWord;
     }
 

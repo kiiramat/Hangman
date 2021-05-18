@@ -5,5 +5,11 @@ RandomUtilities.chooseRandom = (list) => {
 }
 
 RandomUtilities.hide = (word) => {
-    return word.split('').map(ignored => "_");
+    return word.split('').map(character => {
+        if (character !== " ") {
+            return "_";
+        } else {
+            return "&nbsp;"; //non braking space
+        }
+    });
 }
